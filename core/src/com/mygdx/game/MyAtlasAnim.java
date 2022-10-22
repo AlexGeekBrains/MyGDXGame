@@ -8,11 +8,11 @@ public class MyAtlasAnim {
     private Animation<TextureAtlas.AtlasRegion> animation;
     private float time;
 
-    public MyAtlasAnim(String atlas, String name, float fps) {
+    public MyAtlasAnim(String atlas, String name, float fps,Animation.PlayMode playMode) {
         time = 0;
         this.atlas = new TextureAtlas(atlas);
         animation = new Animation<>(1 / fps, this.atlas.findRegions(name));
-        animation.setPlayMode(Animation.PlayMode.LOOP);
+        animation.setPlayMode(playMode);
     }
 
     public TextureRegion draw() {
@@ -21,6 +21,10 @@ public class MyAtlasAnim {
 
     public void setTime(float dt) {
         time += dt;
+    }
+
+    public void resetTime(){
+        time=0;
     }
 
     public void dispose() {
