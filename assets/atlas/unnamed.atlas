@@ -1,118 +1,125 @@
 
 unnamed.png
-size: 1024, 256
+size: 256, 512
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
 fight
   rotate: false
-  xy: 368, 125
-  size: 101, 129
-  orig: 101, 129
+  xy: 2, 386
+  size: 76, 82
+  orig: 76, 82
   offset: 0, 0
   index: 4
 fight
   rotate: false
-  xy: 471, 125
-  size: 101, 129
-  orig: 101, 129
-  offset: 0, 0
-  index: 1
-fight
-  rotate: false
-  xy: 574, 125
-  size: 101, 129
-  orig: 101, 129
+  xy: 2, 302
+  size: 76, 82
+  orig: 76, 82
   offset: 0, 0
   index: 3
 fight
   rotate: false
-  xy: 677, 125
-  size: 101, 129
-  orig: 101, 129
+  xy: 80, 386
+  size: 76, 82
+  orig: 76, 82
   offset: 0, 0
   index: 5
 fight
   rotate: false
-  xy: 780, 125
-  size: 101, 129
-  orig: 101, 129
+  xy: 2, 218
+  size: 76, 82
+  orig: 76, 82
   offset: 0, 0
   index: 2
+fight
+  rotate: false
+  xy: 80, 305
+  size: 67, 79
+  orig: 67, 79
+  offset: 0, 0
+  index: 1
 run
   rotate: false
-  xy: 2, 129
-  size: 120, 125
-  orig: 120, 125
+  xy: 158, 398
+  size: 57, 70
+  orig: 57, 70
   offset: 0, 0
   index: 4
 run
   rotate: false
-  xy: 2, 2
-  size: 120, 125
-  orig: 120, 125
+  xy: 80, 233
+  size: 57, 70
+  orig: 57, 70
+  offset: 0, 0
+  index: 1
+run
+  rotate: false
+  xy: 2, 74
+  size: 57, 70
+  orig: 57, 70
   offset: 0, 0
   index: 6
 run
   rotate: false
-  xy: 124, 129
-  size: 120, 125
-  orig: 120, 125
+  xy: 61, 146
+  size: 57, 70
+  orig: 57, 70
   offset: 0, 0
   index: 3
 run
   rotate: false
-  xy: 124, 2
-  size: 120, 125
-  orig: 120, 125
+  xy: 61, 2
+  size: 57, 70
+  orig: 57, 70
   offset: 0, 0
   index: 5
 run
   rotate: false
-  xy: 246, 129
-  size: 120, 125
-  orig: 120, 125
+  xy: 120, 161
+  size: 57, 70
+  orig: 57, 70
   offset: 0, 0
   index: 2
 run
   rotate: false
-  xy: 246, 2
-  size: 89, 125
-  orig: 89, 125
+  xy: 120, 89
+  size: 57, 70
+  orig: 57, 70
+  offset: 0, 0
+  index: 7
+stay
+  rotate: false
+  xy: 2, 146
+  size: 57, 70
+  orig: 57, 70
   offset: 0, 0
   index: 1
 stay
   rotate: false
-  xy: 883, 144
-  size: 72, 110
-  orig: 72, 110
-  offset: 0, 0
-  index: 1
-stay
-  rotate: false
-  xy: 337, 13
-  size: 72, 110
-  orig: 72, 110
+  xy: 2, 2
+  size: 57, 70
+  orig: 57, 70
   offset: 0, 0
   index: 3
 stay
   rotate: false
-  xy: 411, 13
-  size: 72, 110
-  orig: 72, 110
+  xy: 61, 74
+  size: 57, 70
+  orig: 57, 70
   offset: 0, 0
   index: 5
 stay
   rotate: false
-  xy: 485, 13
-  size: 72, 110
-  orig: 72, 110
+  xy: 139, 233
+  size: 57, 70
+  orig: 57, 70
   offset: 0, 0
   index: 2
 stay
   rotate: false
-  xy: 559, 13
-  size: 72, 110
-  orig: 72, 110
+  xy: 120, 17
+  size: 57, 70
+  orig: 57, 70
   offset: 0, 0
   index: 4

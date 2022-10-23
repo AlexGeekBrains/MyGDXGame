@@ -5,6 +5,8 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.mygdx.game.MyAtlasAnim;
+import com.mygdx.game.MyInputProcessor;
 
 public class Player {
     private MyAtlasAnim stand, run, fight, tmpA;

@@ -22,12 +22,12 @@ public class MyCamera {
         camera.update();
     }
 
-public void render(){
-    camera.position.x= body.getPosition().x;
-    camera.position.y= body.getPosition().y;
-    camera.update();
-    batch.setProjectionMatrix(camera.combined);
-}
+    public void render(){
+        camera.position.x= body.getPosition().x;
+        camera.position.y= body.getPosition().y;
+        camera.update();
+        batch.setProjectionMatrix(camera.combined);
+    }
 
     public OrthographicCamera getOrthographicCamera() {
         return camera;

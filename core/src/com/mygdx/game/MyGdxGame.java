@@ -3,8 +3,13 @@ package com.mygdx.game;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 import com.badlogic.gdx.maps.Map;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -13,6 +18,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class MyGdxGame extends ApplicationAdapter {
@@ -47,11 +53,10 @@ public class MyGdxGame extends ApplicationAdapter {
         body = physics.getWorld().createBody(bodyDef);
         body.createFixture(fixtureDef).setUserData("cube");
 
-
         myInputProcessor = new MyInputProcessor();
         music = Gdx.audio.newMusic(Gdx.files.internal("Tetris_1984.mp3"));
         music.setVolume(0.2f);
-//        music.play();
+        //        music.play();
         Gdx.input.setInputProcessor(myInputProcessor);
         batch = new SpriteBatch();
         player = new Player(myInputProcessor, body);
@@ -65,12 +70,13 @@ public class MyGdxGame extends ApplicationAdapter {
     @Override
     public void render() {
         float dt = Gdx.graphics.getDeltaTime();
+        ScreenUtils.clear(1, 1, 1, 0);
         camera.render();
 
         mapRenderer.setView(camera.getOrthographicCamera());
         mapRenderer.render();
 
-        ScreenUtils.clear(1, 1, 1, 0);
+
         batch.begin();
         System.out.println(myInputProcessor.getOutString());
         player.render(batch, dt);
