@@ -1,4 +1,5 @@
 package com.mygdx.game;
+
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -8,7 +9,7 @@ public class MyAtlasAnim {
     private Animation<TextureAtlas.AtlasRegion> animation;
     private float time;
 
-    public MyAtlasAnim(String atlas, String name, float fps,Animation.PlayMode playMode) {
+    public MyAtlasAnim(String atlas, String name, float fps, Animation.PlayMode playMode) {
         time = 0;
         this.atlas = new TextureAtlas(atlas);
         animation = new Animation<>(1 / fps, this.atlas.findRegions(name));
@@ -23,8 +24,8 @@ public class MyAtlasAnim {
         time += dt;
     }
 
-    public void resetTime(){
-        time=0;
+    public void resetTime() {
+        time = 0;
     }
 
     public void dispose() {
