@@ -2,37 +2,47 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class MyGdxGame extends ApplicationAdapter {
-    SpriteBatch batch;
-    Texture img;
-    GameAnimation bang;
+    private SpriteBatch batch;
+    private Music music;
+    private MyInputProcessor myInputProcessor;
+    private Player player;
 
     @Override
     public void create() {
+        myInputProcessor = new MyInputProcessor();
+        music = Gdx.audio.newMusic(Gdx.files.internal("Tetris_1984.mp3"));
+        music.setVolume(0.2f);
+        music.play();
+        Gdx.input.setInputProcessor(myInputProcessor);
         batch = new SpriteBatch();
-        img = new Texture("bang.png");
-        bang = new GameAnimation("bang.png", 8, 4, 30);
+        player = new Player(myInputProcessor);
     }
 
     @Override
     public void render() {
+        float dt = Gdx.graphics.getDeltaTime();
+        update(dt);
         ScreenUtils.clear(1, 1, 1, 0);
-        bang.setTime(Gdx.graphics.getDeltaTime());
-        float x = Gdx.input.getX() - bang.draw().getRegionWidth() / 2;
-        float y = Gdx.graphics.getHeight() - (Gdx.input.getY() + bang.draw().getRegionHeight() / 2);
         batch.begin();
-        batch.draw(bang.draw(), x, y);
+        System.out.println(myInputProcessor.getOutString());
+        player.render(batch, dt);
         batch.end();
+    }
+
+    public void update(float dt) {
+        player.update(dt);
     }
 
     @Override
     public void dispose() {
+        player.dispose();
         batch.dispose();
-        img.dispose();
-        bang.dispose();
     }
 }
