@@ -34,7 +34,7 @@ public class PlayerControl {
                 isRightOrientation = false;
             }
             currentDraw = run;
-            body.applyForceToCenter(new Vector2(-10f, 0), true);
+            body.applyForceToCenter(new Vector2(-0.03f, 0), true);
         }
         if (myInputProcessor.getOutString().contains("D")) {
             if (!run.draw().isFlipX()) {
@@ -42,10 +42,10 @@ public class PlayerControl {
                 isRightOrientation = true;
             }
             currentDraw = run;
-            body.applyForceToCenter(new Vector2(10f, 0), true);
+            body.applyForceToCenter(new Vector2(0.03f, 0), true);
         }
         if (myInputProcessor.getOutString().contains("W")) {
-            body.applyForceToCenter(new Vector2(0, 10), true);
+            body.applyForceToCenter(new Vector2(0, 0.28f), true);
         }
         if (myInputProcessor.getOutString().contains("S")) {
             currentDraw = run;
