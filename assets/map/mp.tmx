@@ -164,7 +164,7 @@
   </object>
  </objectgroup>
  <objectgroup id="14" name="player">
-  <object id="4" name="Hero" x="677.5" y="730" width="30.5" height="53"/>
+  <object id="4" name="Hero" x="716.5" y="745.333" width="15.5" height="32.6667"/>
  </objectgroup>
  <layer id="7" name="Слой тайлов 1" width="300" height="60">
   <data encoding="csv">

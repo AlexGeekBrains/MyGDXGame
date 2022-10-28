@@ -9,17 +9,20 @@ public class MyCamera {
     private OrthographicCamera camera;
     private SpriteBatch batch;
     private Body body;
+    private Physics physics;
 
-    public MyCamera(SpriteBatch batch, Body body) {
+    public MyCamera(SpriteBatch batch, Body body,Physics physics) {
         this.camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         this.batch = batch;
         this.body = body;
+        this.physics = physics;
+
         camera.update();
     }
 
     public void render() {
-        camera.position.x = body.getPosition().x;
-        camera.position.y = body.getPosition().y + 150;
+        camera.position.x = body.getPosition().x* physics.getPPM();
+        camera.position.y = body.getPosition().y* physics.getPPM()+150;
         camera.update();
         batch.setProjectionMatrix(camera.combined);
     }

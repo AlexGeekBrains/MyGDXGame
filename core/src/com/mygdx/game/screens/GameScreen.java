@@ -1,17 +1,19 @@
-package com.mygdx.game;
+package com.mygdx.game.screens;
 
-import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.mygdx.game.*;
 
-public class MyGdxGame extends ApplicationAdapter {
+public class GameScreen implements Screen {
+    private Game game;
     private SpriteBatch batch;
-//    private Music music;
     private MyInputProcessor myInputProcessor;
     private Player player;
     private PlayerControl playerControl;
@@ -20,14 +22,11 @@ public class MyGdxGame extends ApplicationAdapter {
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;
 
-    @Override
-    public void create() {
+    public GameScreen(Game game) {
+        this.game = game;
         map = new TmxMapLoader().load("map/mp.tmx");
         physics = new Physics(map);
         myInputProcessor = new MyInputProcessor();
-//        music = Gdx.audio.newMusic(Gdx.files.internal("Tetris_1984.mp3"));
-//        music.setVolume(0.2f);
-//        music.play();
         Gdx.input.setInputProcessor(myInputProcessor);
         batch = new SpriteBatch();
         playerControl = new PlayerControl(myInputProcessor, physics.getBody());
@@ -37,13 +36,12 @@ public class MyGdxGame extends ApplicationAdapter {
     }
 
     @Override
-    public void resize(int width, int height) {
-        camera.getOrthographicCamera().viewportWidth = width;
-        camera.getOrthographicCamera().viewportHeight = height;
+    public void show() {
+
     }
 
     @Override
-    public void render() {
+    public void render(float delta) {
         float dt = Gdx.graphics.getDeltaTime();
         ScreenUtils.clear(1, 1, 1, 0);
         camera.render();
@@ -55,6 +53,35 @@ public class MyGdxGame extends ApplicationAdapter {
         batch.end();
         physics.step();
         physics.debugDraw(camera.getOrthographicCamera());
+        escExitToMenu();
+    }
+
+    private void escExitToMenu() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            dispose();
+            game.setScreen(new MenuScreen(game));
+        }
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        camera.getOrthographicCamera().viewportWidth = width;
+        camera.getOrthographicCamera().viewportHeight = height;
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
+
     }
 
     @Override
@@ -64,6 +91,5 @@ public class MyGdxGame extends ApplicationAdapter {
         physics.dispose();
         map.dispose();
         mapRenderer.dispose();
-//        music.dispose();
     }
 }
