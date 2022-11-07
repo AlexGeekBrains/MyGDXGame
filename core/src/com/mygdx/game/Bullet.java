@@ -31,7 +31,7 @@ public class Bullet {
 
     public void render(SpriteBatch batch, Physics physics) {
         PhysBody physBody = (PhysBody) bodyBullet.getUserData();
-        if (bodyBullet != null && physBody !=null) {
+        if (bodyBullet != null && physBody != null) {
 //            PhysBody physBody = (PhysBody) bodyBullet.getUserData();
             float x = bodyBullet.getPosition().x * physics.getPPM() - physBody.getSize().x;
             float y = bodyBullet.getPosition().y * physics.getPPM() - physBody.getSize().y;

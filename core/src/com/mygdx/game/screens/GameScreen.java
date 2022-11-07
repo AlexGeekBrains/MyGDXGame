@@ -12,20 +12,17 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.*;
 
-import java.util.ArrayList;
 
 public class GameScreen implements Screen {
     private Game game;
     private SpriteBatch batch;
     private MyInputProcessor myInputProcessor;
     private Player player;
-    //    private PlayerControl playerControl;
     private MyCamera camera;
     private Physics physics;
     private TiledMap map;
     private Body playerBody;
     private OrthogonalTiledMapRenderer mapRenderer;
-
     private Box box;
 
 
@@ -38,7 +35,6 @@ public class GameScreen implements Screen {
         myInputProcessor = new MyInputProcessor();
         Gdx.input.setInputProcessor(myInputProcessor);
         batch = new SpriteBatch();
-//        playerControl = new PlayerControl(myInputProcessor, playerBody, physics);
         player = new Player(myInputProcessor, playerBody, physics, batch);
         camera = new MyCamera(batch, playerBody, physics);
         mapRenderer = new OrthogonalTiledMapRenderer(map);
@@ -54,7 +50,7 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         update();
-                float dt = Gdx.graphics.getDeltaTime();
+        float dt = Gdx.graphics.getDeltaTime();
         ScreenUtils.clear(0.2235f, 0.6823f, 1f, 0);
         camera.render();
         mapRenderer.setView(camera.getOrthographicCamera());
@@ -68,8 +64,7 @@ public class GameScreen implements Screen {
         escExitToMenu();
     }
 
-
-    private void update(){ //вынес в отдельный метод потому как решил что проблема может быть в этом, еще игра стала подвисать из за этого иногда
+    private void update() { //вынес в отдельный метод потому как решил что проблема может быть в этом, еще игра стала подвисать из за этого иногда
         for (int i = 0; i < physics.getMyContList().getDestroyObj().size(); i++) {
             physics.destroyBody(physics.getMyContList().getDestroyObj().get(i));
         }
@@ -106,7 +101,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-//        playerControl.dispose();
         player.dispose();
         batch.dispose();
         physics.dispose();

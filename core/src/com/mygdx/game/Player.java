@@ -43,7 +43,6 @@ public class Player {
         bullets = new ArrayList<>();
     }
 
-
     public void render(SpriteBatch batch, float dt) {
         currentDraw.setTime(dt);
         checkMovement();
@@ -53,9 +52,8 @@ public class Player {
 
         float correctX = 18f;//Корректировка, что бы картинка персонажа рисовалась в центре физической фигуры
         float correctY = 5f;
-//        batch.draw(currentDraw.draw(), (playerBody.getPosition().x * physics.getPPM()) - correctX, (playerBody.getPosition().y * physics.getPPM()) - correctY);
-        PhysBody physBody = (PhysBody)playerBody.getUserData();
-        batch.draw(currentDraw.draw(), (playerBody.getPosition().x* physics.getPPM()-physBody.getSize().x-correctX ), (playerBody.getPosition().y * physics.getPPM())-physBody.getSize().y-correctY);
+        PhysBody physBody = (PhysBody) playerBody.getUserData();
+        batch.draw(currentDraw.draw(), (playerBody.getPosition().x * physics.getPPM() - physBody.getSize().x - correctX), (playerBody.getPosition().y * physics.getPPM()) - physBody.getSize().y - correctY);
     }
 
     public void checkMovement() {
