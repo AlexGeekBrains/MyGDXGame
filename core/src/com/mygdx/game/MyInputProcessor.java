@@ -1,9 +1,11 @@
 package com.mygdx.game;
+
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 
 public class MyInputProcessor implements InputProcessor {
 
+    private boolean isWContains;
     private String outString = "";
 
     public String getOutString() {

@@ -1,124 +1,138 @@
 
 unnamed.png
-size: 256, 512
+size: 2048, 128
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
-fight
+box
   rotate: false
-  xy: 2, 386
-  size: 76, 82
-  orig: 76, 82
+  xy: 383, 34
+  size: 64, 65
+  orig: 64, 65
   offset: 0, 0
-  index: 4
-fight
+  index: 1
+bullet
   rotate: false
-  xy: 2, 302
-  size: 76, 82
-  orig: 76, 82
-  offset: 0, 0
-  index: 3
-fight
-  rotate: false
-  xy: 80, 386
-  size: 76, 82
-  orig: 76, 82
-  offset: 0, 0
-  index: 5
-fight
-  rotate: false
-  xy: 2, 218
-  size: 76, 82
-  orig: 76, 82
-  offset: 0, 0
-  index: 2
-fight
-  rotate: false
-  xy: 80, 305
-  size: 67, 79
-  orig: 67, 79
+  xy: 2, 2
+  size: 21, 13
+  orig: 21, 13
   offset: 0, 0
   index: 1
 run
   rotate: false
-  xy: 158, 398
+  xy: 449, 29
   size: 57, 70
   orig: 57, 70
   offset: 0, 0
   index: 4
 run
   rotate: false
-  xy: 80, 233
+  xy: 567, 29
   size: 57, 70
   orig: 57, 70
   offset: 0, 0
   index: 1
 run
   rotate: false
-  xy: 2, 74
+  xy: 626, 29
   size: 57, 70
   orig: 57, 70
   offset: 0, 0
   index: 6
 run
   rotate: false
-  xy: 61, 146
+  xy: 744, 29
   size: 57, 70
   orig: 57, 70
   offset: 0, 0
   index: 3
 run
   rotate: false
-  xy: 61, 2
+  xy: 862, 29
   size: 57, 70
   orig: 57, 70
   offset: 0, 0
   index: 5
 run
   rotate: false
-  xy: 120, 161
+  xy: 980, 29
   size: 57, 70
   orig: 57, 70
   offset: 0, 0
   index: 2
 run
   rotate: false
-  xy: 120, 89
+  xy: 1039, 29
   size: 57, 70
   orig: 57, 70
   offset: 0, 0
   index: 7
+shot
+  rotate: false
+  xy: 2, 17
+  size: 76, 82
+  orig: 76, 82
+  offset: 0, 0
+  index: 3
+shot
+  rotate: false
+  xy: 80, 17
+  size: 76, 82
+  orig: 76, 82
+  offset: 0, 0
+  index: 5
+shot
+  rotate: false
+  xy: 158, 17
+  size: 76, 82
+  orig: 76, 82
+  offset: 0, 0
+  index: 2
+shot
+  rotate: false
+  xy: 236, 17
+  size: 76, 82
+  orig: 76, 82
+  offset: 0, 0
+  index: 4
+shot
+  rotate: false
+  xy: 314, 20
+  size: 67, 79
+  orig: 67, 79
+  offset: 0, 0
+  index: 1
 stay
   rotate: false
-  xy: 2, 146
+  xy: 508, 29
   size: 57, 70
   orig: 57, 70
   offset: 0, 0
   index: 1
 stay
   rotate: false
-  xy: 2, 2
+  xy: 685, 29
   size: 57, 70
   orig: 57, 70
   offset: 0, 0
   index: 3
 stay
   rotate: false
-  xy: 61, 74
+  xy: 803, 29
   size: 57, 70
   orig: 57, 70
   offset: 0, 0
   index: 5
 stay
   rotate: false
-  xy: 139, 233
+  xy: 921, 29
   size: 57, 70
   orig: 57, 70
   offset: 0, 0
   index: 2
 stay
   rotate: false
-  xy: 120, 17
+  xy: 1098, 29
   size: 57, 70
   orig: 57, 70
   offset: 0, 0

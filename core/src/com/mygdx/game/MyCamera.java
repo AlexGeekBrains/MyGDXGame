@@ -8,21 +8,20 @@ import com.badlogic.gdx.physics.box2d.Body;
 public class MyCamera {
     private OrthographicCamera camera;
     private SpriteBatch batch;
-    private Body body;
     private Physics physics;
+    private Body playerBody;
 
-    public MyCamera(SpriteBatch batch, Body body,Physics physics) {
+    public MyCamera(SpriteBatch batch, Body playerBody, Physics physics) {
         this.camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         this.batch = batch;
-        this.body = body;
         this.physics = physics;
-
+        this.playerBody = playerBody;
         camera.update();
     }
 
     public void render() {
-        camera.position.x = body.getPosition().x* physics.getPPM();
-        camera.position.y = body.getPosition().y* physics.getPPM()+150;
+        camera.position.x = playerBody.getPosition().x* physics.getPPM();
+        camera.position.y = playerBody.getPosition().y* physics.getPPM()+150;
         camera.update();
         batch.setProjectionMatrix(camera.combined);
     }
