@@ -9,8 +9,11 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.*;
+
+import java.util.ArrayList;
 
 
 public class GameScreen implements Screen {
@@ -24,6 +27,9 @@ public class GameScreen implements Screen {
     private Body playerBody;
     private OrthogonalTiledMapRenderer mapRenderer;
     private Box box;
+    private Coin coin;
+    private int winCondition;
+    private ArrayList<Destroyed> coins;
 
 
     public GameScreen(Game game) {
@@ -35,11 +41,18 @@ public class GameScreen implements Screen {
         myInputProcessor = new MyInputProcessor();
         Gdx.input.setInputProcessor(myInputProcessor);
         batch = new SpriteBatch();
-        player = new Player(myInputProcessor, playerBody, physics, batch);
+        player = new Player(myInputProcessor, playerBody, physics);
+        physics.getMyContList().setPlayer(player);
         camera = new MyCamera(batch, playerBody, physics);
         mapRenderer = new OrthogonalTiledMapRenderer(map);
         box = new Box(physics);
-        box.test();
+        Array<Body> bodyCoin = physics.getBodies("coin");
+        winCondition = bodyCoin.size;
+        coins = new ArrayList<>();
+        for (int i = 0; i < bodyCoin.size; i++) {
+            coin = new Coin(coins, bodyCoin.get(i));
+            coins.add(coin);
+        }
     }
 
     @Override
@@ -49,7 +62,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        update();
         float dt = Gdx.graphics.getDeltaTime();
         ScreenUtils.clear(0.2235f, 0.6823f, 1f, 0);
         camera.render();
@@ -58,23 +70,52 @@ public class GameScreen implements Screen {
         batch.begin();
         box.render(batch, physics);
         player.render(batch, dt);
+        updateActiveObjArr(player.getBulletsForRender());
+        updateActiveObjArr(coins);
+        for (Destroyed bullet : player.getBulletsForRender()) {
+            bullet.render(batch, physics, dt);
+        }
+        for (Destroyed coin : coins) {
+            coin.render(batch, physics, dt);
+        }
         batch.end();
         physics.step();
         physics.debugDraw(camera.getOrthographicCamera());
         escExitToMenu();
-    }
-
-    private void update() { //вынес в отдельный метод потому как решил что проблема может быть в этом, еще игра стала подвисать из за этого иногда
-        for (int i = 0; i < physics.getMyContList().getDestroyObj().size(); i++) {
-            physics.destroyBody(physics.getMyContList().getDestroyObj().get(i));
-        }
-        physics.getMyContList().getDestroyObj().clear();
+        listenPlayerAndCallGameOverScreenIfDeath();
+        listenPlayerAndCallWinScreenIfWin();
     }
 
     private void escExitToMenu() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             dispose();
             game.setScreen(new MenuScreen(game));
+        }
+    }
+
+    private void listenPlayerAndCallGameOverScreenIfDeath() {
+        if (player.getDeathAnim().isAnimationOver()) {
+            dispose();
+            game.setScreen(new GameOverScreen(game));
+        }
+    }
+
+    private void listenPlayerAndCallWinScreenIfWin() {
+        if (player.getCoins() == winCondition) {
+            dispose();
+            game.setScreen(new WinScreen(game));
+        }
+    }
+
+    private void updateActiveObjArr(ArrayList<Destroyed> destroyed) {
+        if (!destroyed.isEmpty()) {
+            for (int i = 0; i < destroyed.size(); i++) {
+                PhysBody physBody = (PhysBody) destroyed.get(i).getBody().getUserData();
+                if (!physBody.isActive()) {
+                    physics.destroyBody(destroyed.get(i).getBody());
+                    destroyed.remove(i);
+                }
+            }
         }
     }
 

@@ -5,8 +5,7 @@ import com.badlogic.gdx.InputProcessor;
 
 public class MyInputProcessor implements InputProcessor {
 
-    private boolean isWContains;
-    private String outString = "";
+     private String outString = "";
 
     public String getOutString() {
         return outString;
