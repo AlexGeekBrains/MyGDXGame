@@ -22,11 +22,4 @@ public class Box {
             batch.draw(box, x, y, physBody.getSize().x * 2, physBody.getSize().y * 2);
         }
     }
-
-    public void test() {
-        for (int i = 0; i < boxes.size; i++) {
-            System.out.println(boxes.get(i).getPosition());
-        }
-    }
-
 }
