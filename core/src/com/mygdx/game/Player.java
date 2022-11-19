@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -9,7 +10,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.utils.Array;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,12 +25,16 @@ public class Player {
     @Getter
     private boolean isRightOrientation;
     private static final Sound HIT_SOUND = Gdx.audio.newSound(Gdx.files.internal("hit.mp3"));
-    ;
-    private boolean fire;
+    private static final Sound TAKE_COIN_SOUND = Gdx.audio.newSound(Gdx.files.internal("money.mp3"));
+    private static final Sound NO_BULLET_SOUND = Gdx.audio.newSound(Gdx.files.internal("nobullet.mp3"));
+    private static final Sound RECHARGE_SOUND = Gdx.audio.newSound(Gdx.files.internal("recharge.mp3"));
+    private static final Sound LOSS_SOUND = Gdx.audio.newSound(Gdx.files.internal("loss.mp3"));
+    private float health;
+    private boolean isFire;
+    private boolean isMisFire;
+    private float bulletsInClip;
     private static final float X_PHYS_OK = 0.250f;
     private static final float Y_PHYS_OK = 30.2f;
-    private static final float X_PHYS_DEBUG = 20000f;
-    private static final float Y_PHYS_DEBUG = 90000f;
     @Getter
     private int coins;
     @Setter
@@ -42,6 +46,7 @@ public class Player {
 
     public Player(MyInputProcessor myInputProcessor, Body playerBody, Physics physics) {
         this.physics = physics;
+        health = 100;
         standAnim = new MyAtlasAnim("atlas/unnamed.atlas", "stay", 10, Animation.PlayMode.LOOP);
         runAnim = new MyAtlasAnim("atlas/unnamed.atlas", "run", 10, Animation.PlayMode.LOOP);
         shotAnim = new MyAtlasAnim("atlas/unnamed.atlas", "shot", 20, Animation.PlayMode.NORMAL);
@@ -51,23 +56,28 @@ public class Player {
         this.playerBody = playerBody;
         this.physics = physics;
         bulletsForRender = new ArrayList<>();
+        bulletsInClip = 7;
     }
 
 
     public void render(SpriteBatch batch, float dt) {
         currentDraw.setTime(dt);
-        checkMovement();
+        update();
         float correctY = 4f; //Корректировка, что бы картинка персонажа касалась земли (видимо анимация кривая если это убрать то как будто парит в воздухе немного
+        float correctX = 25;
         Rectangle rectangle = getPlayerRect();
-        ((PolygonShape) playerBody.getFixtureList().get(0).getShape()).setAsBox(rectangle.width / 2, rectangle.height / 2);
-        ((PolygonShape) playerBody.getFixtureList().get(playerBody.getFixtureList().size - 1).getShape()).setAsBox(rectangle.width / 15, rectangle.height / 15, new Vector2((rectangle.width / 2) - 6f / physics.getPPM(), -rectangle.height / 2), 0);
-        ((PolygonShape) playerBody.getFixtureList().get(playerBody.getFixtureList().size - 2).getShape()).setAsBox(rectangle.width / 15, rectangle.height / 15, new Vector2((-rectangle.width / 2) + 6f / physics.getPPM(), -rectangle.height / 2), 0);
-        batch.draw(currentDraw.draw(), rectangle.x, rectangle.y - correctY, rectangle.width * physics.getPPM(), rectangle.height * physics.getPPM());
+        ((PolygonShape) playerBody.getFixtureList().get(0).getShape()).setAsBox((rectangle.width - correctX) / 2 / physics.getPPM(), rectangle.height / 2 / physics.getPPM());
+        ((PolygonShape) playerBody.getFixtureList().get(playerBody.getFixtureList().size - 1).getShape()).setAsBox(rectangle.width / 15 / physics.getPPM(), rectangle.height / 15 / physics.getPPM(), new Vector2((((rectangle.width - correctX) / 2) - 6f) / physics.getPPM(), -rectangle.height / 2 / physics.getPPM()), 0);
+        ((PolygonShape) playerBody.getFixtureList().get(playerBody.getFixtureList().size - 2).getShape()).setAsBox(rectangle.width / 15 / physics.getPPM(), rectangle.height / 15 / physics.getPPM(), new Vector2(((-(rectangle.width - correctX) / 2) + 6f) / physics.getPPM(), -rectangle.height / 2 / physics.getPPM()), 0);
+        batch.draw(currentDraw.draw(), rectangle.x, rectangle.y - correctY, rectangle.width, rectangle.height);
     }
 
+    public void decreaseHealth(float damage) {
+        health -= damage;
+    }
 
-    public void checkMovement() {
-        if (!fire && !isDeath) {
+    private void checkMovement() {
+        if (!isFire && !isDeath && !isMisFire) {
             changeAnimOrientation(standAnim);
             currentDraw = standAnim;
             if (myInputProcessor.getOutString().contains("A")) {
@@ -76,7 +86,8 @@ public class Player {
                     isRightOrientation = false;
                 }
                 currentDraw = runAnim;
-                playerBody.applyForceToCenter(new Vector2(-X_PHYS_OK, 0), true);
+                if (playerBody.getLinearVelocity().x > -2.2)
+                    playerBody.applyForceToCenter(new Vector2(-X_PHYS_OK, 0), true);
             }
             if (myInputProcessor.getOutString().contains("D")) {
                 if (!runAnim.draw().isFlipX()) {
@@ -84,45 +95,81 @@ public class Player {
                     isRightOrientation = true;
                 }
                 currentDraw = runAnim;
-                playerBody.applyForceToCenter(new Vector2(X_PHYS_OK, 0), true);
+                if (playerBody.getLinearVelocity().x < 2.2) {
+                    playerBody.applyForceToCenter(new Vector2(X_PHYS_OK, 0), true);
+                }
             }
-            if (Gdx.input.isKeyJustPressed(51) && physics.getMyContList().isOnGround()) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.W) && physics.getMyContList().isOnGround()) {
                 playerBody.applyForceToCenter(new Vector2(0, Y_PHYS_OK), true);
             }
-            if (myInputProcessor.getOutString().contains("S")) {
-                currentDraw = runAnim;
+            if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+                if (bulletsInClip == 0) {
+                    NO_BULLET_SOUND.play();
+                    isMisFire = true;
+                }
+                if (bulletsInClip > 0) {
+                    bulletsInClip--;
+                    bulletsForRender.add(new Bullet(this).shot(new Vector2(5, 0), physics));
+                    HIT_SOUND.play();
+                    isFire = true;
+                }
             }
-            if (Gdx.input.isKeyJustPressed(62)) {
-                fire = true;
-                HIT_SOUND.play();
-                bulletsForRender.add(new Bullet(this).shot(new Vector2(10, 0), physics));
-
+            if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
+                reloadedGun();
+                RECHARGE_SOUND.play();
             }
         }
+    }
+
+    public void update() {
+        checkMovement();
         checkFire();
+        misfire();
+        checkHealth();
         checkDeath();
     }
 
     public void checkFire() {
-        if (fire) {
+        if (isFire) {
             changeAnimOrientation(shotAnim);
             currentDraw = shotAnim;
             if (currentDraw.isAnimationOver()) {
                 currentDraw.resetTime();
-                fire = false;
+                isFire = false;
             }
         }
+    }
+
+    public void misfire() {
+        if (isMisFire) {
+            changeAnimOrientation(shotAnim);
+            currentDraw = shotAnim;
+            if (currentDraw.isAnimationOver()) {
+                currentDraw.resetTime();
+                isMisFire = false;
+            }
+        }
+    }
+
+    public void reloadedGun() {
+        bulletsInClip = 7;
     }
 
     public void checkDeath() {
         if (isDeath) {
             changeAnimOrientation(deathAnim);
             currentDraw = deathAnim;
+            if (currentDraw.isAnimationOver()) LOSS_SOUND.play();
         }
+    }
+
+    public void checkHealth() {
+        if (health <= 0) isDeath = true;
     }
 
     public void incrementCoins() {
         coins++;
+        TAKE_COIN_SOUND.play();
         System.out.println(coins);
     }
 
@@ -130,8 +177,8 @@ public class Player {
         TextureRegion tr = currentDraw.draw();
         float x = playerBody.getPosition().x * physics.getPPM() - tr.getRegionWidth() / 2;
         float y = playerBody.getPosition().y * physics.getPPM() - tr.getRegionHeight() / 2;
-        float w = tr.getRegionWidth() / physics.getPPM();
-        float h = tr.getRegionHeight() / physics.getPPM();
+        float w = tr.getRegionWidth();
+        float h = tr.getRegionHeight();
         return new Rectangle(x, y, w, h);
     }
 
@@ -149,6 +196,5 @@ public class Player {
         runAnim.dispose();
         shotAnim.dispose();
         currentDraw.dispose();
-        HIT_SOUND.dispose();
     }
 }

@@ -5,7 +5,7 @@ import com.badlogic.gdx.InputProcessor;
 
 public class MyInputProcessor implements InputProcessor {
 
-     private String outString = "";
+    private String outString = "";
 
     public String getOutString() {
         return outString;

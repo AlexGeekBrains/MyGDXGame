@@ -32,7 +32,7 @@ public class MyAtlasAnim {
         time = 0;
     }
 
-    public boolean isAnimationOver(){
+    public boolean isAnimationOver() {
         return animation.isAnimationFinished(time);
     }
 

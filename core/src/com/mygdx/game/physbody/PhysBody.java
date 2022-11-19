@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.physbody;
 
 
 import com.badlogic.gdx.math.Vector2;
@@ -10,8 +10,8 @@ import lombok.Setter;
 public class PhysBody {
 
     @Setter
-    @Getter
     private boolean isActive;
+
     private Vector2 size;
     private String name;
     private Body body;

@@ -20,8 +20,8 @@ public class MyCamera {
     }
 
     public void render() {
-        camera.position.x = playerBody.getPosition().x* physics.getPPM();
-        camera.position.y = playerBody.getPosition().y* physics.getPPM()+150;
+        camera.position.x = playerBody.getPosition().x * physics.getPPM();
+        camera.position.y = playerBody.getPosition().y * physics.getPPM();
         camera.update();
         batch.setProjectionMatrix(camera.combined);
     }

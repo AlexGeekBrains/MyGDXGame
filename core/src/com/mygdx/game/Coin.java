@@ -28,12 +28,12 @@ public class Coin implements Destroyed {
         if (bodyCoin != null) {
             for (Destroyed destroyed : coins) {
                 coin.setTime(dt);
-                float wight = coin.draw().getRegionWidth();
-                float height = coin.draw().getRegionHeight();
-                float x = destroyed.getBody().getPosition().x * physics.getPPM() - wight / 2 / D_SCALE;
-                float y = destroyed.getBody().getPosition().y * physics.getPPM() - height / 2 / D_SCALE;
-                ((PolygonShape) destroyed.getBody().getFixtureList().get(0).getShape()).setAsBox(wight / 2 / D_SCALE / physics.getPPM(), height / 2 / D_SCALE / physics.getPPM());
-                batch.draw(coin.draw(), x, y, wight / D_SCALE, height / D_SCALE);
+                float wight = coin.draw().getRegionWidth() / D_SCALE;
+                float height = coin.draw().getRegionHeight() / D_SCALE;
+                float x = destroyed.getBody().getPosition().x * physics.getPPM() - wight / 2;
+                float y = destroyed.getBody().getPosition().y * physics.getPPM() - height / 2;
+                ((PolygonShape) destroyed.getBody().getFixtureList().get(0).getShape()).setAsBox(wight / 2 / physics.getPPM(), height / 2 / physics.getPPM());
+                batch.draw(coin.draw(), x, y, wight, height);
             }
         }
     }
