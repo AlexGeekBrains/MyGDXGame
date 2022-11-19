@@ -6,6 +6,8 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.physbody.PhysBody;
+import com.mygdx.game.physbody.PhysBodyMonster;
 
 import java.util.Iterator;
 
@@ -68,8 +70,7 @@ public class Physics {
         return bodies;
     }
 
-
-    public void createPhysObj(MapLayer textures) {
+    public Body createPhysObj(MapLayer textures) {
         fixtureDef.shape = shape;
         Array<RectangleMapObject> rect = textures.getObjects().getByType(RectangleMapObject.class);
         for (int i = 0; i < rect.size; i++) {
@@ -99,50 +100,46 @@ public class Physics {
             bodyDef.position.set(x / PPM, y / PPM);
             shape.setAsBox(w / PPM, h / PPM);
             body = world.createBody(bodyDef);
-            body.setUserData(new PhysBody(rect.get(i).getName(), new Vector2(w, h), body));
-            body.createFixture(fixtureDef).setUserData(rect.get(i).getName());
-            if (rect.get(i).getName().equals("coin")) body.getFixtureList().get(0).setSensor(true);
+
+            if (rect.get(i).getName().equals("skeleton")) {
+                body.setUserData(new PhysBodyMonster(rect.get(i).getName(), new Vector2(w, h), body));
+                body.createFixture(fixtureDef).setUserData(rect.get(i).getName());
+                body.setFixedRotation(true);
+
+                shape.setAsBox((w / 10) / PPM, (h / 10) / PPM, new Vector2((-w / PPM), -h / PPM), 0);
+                body.createFixture(fixtureDef).setUserData("monsterLeftFoot");
+                body.getFixtureList().get(body.getFixtureList().size - 1).setSensor(true);
+
+                shape.setAsBox((w / 10) / PPM, (h / 10) / PPM, new Vector2((w / PPM), -h / PPM), 0);
+                body.createFixture(fixtureDef).setUserData("monsterRightFoot");
+                body.getFixtureList().get(body.getFixtureList().size - 1).setSensor(true);
+
+                shape.setAsBox((w / 10) / PPM, (h / 10) / PPM, new Vector2((-w / PPM), h / PPM), 0);
+                body.createFixture(fixtureDef).setUserData("monsterSeeLeftSide");
+                body.getFixtureList().get(body.getFixtureList().size - 1).setSensor(true);
+
+                shape.setAsBox((w / 10) / PPM, (h / 10) / PPM, new Vector2((w / PPM), h / PPM), 0);
+                body.createFixture(fixtureDef).setUserData("monsterSeeRightSide");
+                body.getFixtureList().get(body.getFixtureList().size - 1).setSensor(true);
+
+                shape.setAsBox((w / 10) / PPM, (h / 10) / PPM, new Vector2((w / PPM), h / PPM), 0);
+                body.createFixture(fixtureDef).setUserData("monsterDamage");
+                body.getFixtureList().get(body.getFixtureList().size - 1).setSensor(true);
+            } else {
+                body.setUserData(new PhysBody(rect.get(i).getName(), new Vector2(w, h), body));
+                body.createFixture(fixtureDef).setUserData(rect.get(i).getName());
+                if (rect.get(i).getName().equals("coin")) body.getFixtureList().get(0).setSensor(true);
+                if (rect.get(i).getName().equals("Hero")) {
+                    body.setFixedRotation(true);
+                    shape.setAsBox((w / 10) / PPM, (h / 10) / PPM, new Vector2((-w / PPM) / PPM, -h / PPM), 0);
+                    body.createFixture(fixtureDef).setUserData("leftFoot");
+                    body.getFixtureList().get(body.getFixtureList().size - 1).setSensor(true);
+                    shape.setAsBox((w / 10) / PPM, (h / 10) / PPM, new Vector2((w / PPM) / PPM, -h / PPM), 0);
+                    body.createFixture(fixtureDef).setUserData("rightFoot");
+                    body.getFixtureList().get(body.getFixtureList().size - 1).setSensor(true);
+                }
+            }
         }
-    }
-
-    public Body createBodyPlayer(MapLayer hero) {
-        fixtureDef.shape = shape;
-        RectangleMapObject rectHero = (RectangleMapObject) hero.getObjects().get("Hero");
-        if (rectHero.getProperties().get("gravityScale") != null)
-            bodyDef.gravityScale = (float) rectHero.getProperties().get("gravityScale");
-        String type = (String) rectHero.getProperties().get("BodyType");
-        switch (type) {
-            case "StaticBody":
-                bodyDef.type = BodyDef.BodyType.StaticBody;
-                break;
-            case "DynamicBody":
-                bodyDef.type = BodyDef.BodyType.DynamicBody;
-                break;
-        }
-        float x = (rectHero.getRectangle().width / 2 + rectHero.getRectangle().x);
-        float y = (rectHero.getRectangle().height / 2 + rectHero.getRectangle().y);
-        float w = (rectHero.getRectangle().width / 2);
-        float h = (rectHero.getRectangle().height / 2);
-        bodyDef.position.set(x / PPM, y / PPM);
-        shape.setAsBox(w / PPM, h / PPM);
-        if (rectHero.getProperties().get("density") != null)
-            fixtureDef.density = (float) rectHero.getProperties().get("density");
-        if (rectHero.getProperties().get("restitution") != null)
-            fixtureDef.restitution = (float) rectHero.getProperties().get("restitution");
-        if (rectHero.getProperties().get("friction") != null)
-            fixtureDef.friction = (float) rectHero.getProperties().get("friction");
-        body = world.createBody(bodyDef);
-        body.createFixture(fixtureDef).setUserData(rectHero.getName());
-        body.setUserData(new PhysBody(rectHero.getName(), new Vector2(w, h), body));
-        body.setFixedRotation(true);
-
-        shape.setAsBox((w / 10) / PPM, (h / 10) / PPM, new Vector2((-w / PPM) / PPM, -h / PPM), 0);
-        body.createFixture(fixtureDef).setUserData("leftFoot");
-        body.getFixtureList().get(body.getFixtureList().size - 1).setSensor(true);
-
-        shape.setAsBox((w / 10) / PPM, (h / 10) / PPM, new Vector2((w / PPM) / PPM, -h / PPM), 0);
-        body.createFixture(fixtureDef).setUserData("rightFoot");
-        body.getFixtureList().get(body.getFixtureList().size - 1).setSensor(true);
         return body;
     }
 
@@ -156,14 +153,11 @@ public class Physics {
             x = player.getPlayerRect().getX() / PPM;
         }
         y = player.getPlayerBody().getPosition().y;
-        float w = 4;
-        float h = 4;
+        float w = 1;
+        float h = 1;
         bodyDef.position.set(x, y);
         bodyDef.gravityScale = 0.2f;
         shape.setAsBox(w / PPM, h / PPM);
-        fixtureDef.density = 1;
-        fixtureDef.restitution = 0;
-        fixtureDef.friction = 0;
         body = world.createBody(bodyDef);
         body.createFixture(fixtureDef).setUserData("bullet");
         body.setUserData(new PhysBody("bullet", new Vector2(w, h), body));

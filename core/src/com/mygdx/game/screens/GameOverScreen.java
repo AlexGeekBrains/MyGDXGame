@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import java.awt.*;
 
@@ -42,8 +43,8 @@ public class GameOverScreen implements Screen {
         batch.draw(buttonRestart, x, y + buttonRestart.getHeight());
         batch.end();
 //        shape.begin(ShapeRenderer.ShapeType.Filled);  // оставил для дебага.
-//        shape.rect(rectangleRestart.x, rectangleRestart.y, rectangleRestart.width,rectangleRestart.height);
-//        shape.rect(rectangleExit.x, rectangleExit.y, rectangleExit.width,rectangleExit.height);
+//        shape.rect(rectangleRestart.x, rectangleRestart.y, rectangleRestart.width, rectangleRestart.height);
+//        shape.rect(rectangleExit.x, rectangleExit.y, rectangleExit.width, rectangleExit.height);
 //        shape.end();
         checkPushRestart();
         checkPushExit();
@@ -89,10 +90,7 @@ public class GameOverScreen implements Screen {
 
     @Override
     public void dispose() {
-        this.buttonExit.dispose();
         this.gameOver.dispose();
-        this.buttonExit.dispose();
-        this.buttonRestart.dispose();
         this.batch.dispose();
 //        this.shape.dispose();
     }

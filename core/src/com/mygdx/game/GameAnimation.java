@@ -17,6 +17,11 @@ public class GameAnimation {
         animation.setPlayMode(Animation.PlayMode.LOOP);
     }
 
+    public GameAnimation(float fps, TextureRegion[] region, Animation.PlayMode playMode) {
+        animation = new Animation<>(1 / fps, region);
+        animation.setPlayMode(playMode);
+    }
+
     private TextureRegion[] convertTwoDimToOneDimArr(TextureRegion[][] regions) {
         int cnt = 0;
         TextureRegion[] tmp = new TextureRegion[regions.length * regions[0].length];

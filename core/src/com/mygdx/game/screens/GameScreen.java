@@ -12,6 +12,8 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.*;
+import com.mygdx.game.monsters.Skeleton;
+import com.mygdx.game.physbody.PhysBody;
 
 import java.util.ArrayList;
 
@@ -27,17 +29,17 @@ public class GameScreen implements Screen {
     private Body playerBody;
     private OrthogonalTiledMapRenderer mapRenderer;
     private Box box;
-    private Coin coin;
     private int winCondition;
     private ArrayList<Destroyed> coins;
-
+    private ArrayList<Destroyed> skeletons;
 
     public GameScreen(Game game) {
         this.game = game;
         map = new TmxMapLoader().load("map/mp.tmx");
         physics = new Physics();
         physics.createPhysObj(map.getLayers().get("textures"));
-        playerBody = physics.createBodyPlayer(map.getLayers().get("player"));
+        playerBody = physics.createPhysObj(map.getLayers().get("player"));
+
         myInputProcessor = new MyInputProcessor();
         Gdx.input.setInputProcessor(myInputProcessor);
         batch = new SpriteBatch();
@@ -46,13 +48,20 @@ public class GameScreen implements Screen {
         camera = new MyCamera(batch, playerBody, physics);
         mapRenderer = new OrthogonalTiledMapRenderer(map);
         box = new Box(physics);
+
         Array<Body> bodyCoin = physics.getBodies("coin");
         winCondition = bodyCoin.size;
         coins = new ArrayList<>();
         for (int i = 0; i < bodyCoin.size; i++) {
-            coin = new Coin(coins, bodyCoin.get(i));
-            coins.add(coin);
+            coins.add(new Coin(coins, bodyCoin.get(i)));
         }
+
+        Array<Body> bodySkeleton = physics.getBodies("skeleton");
+        skeletons = new ArrayList<>();
+        for (int i = 0; i < bodySkeleton.size; i++) {
+            skeletons.add(new Skeleton(bodySkeleton.get(i), player));
+        }
+
     }
 
     @Override
@@ -72,11 +81,16 @@ public class GameScreen implements Screen {
         player.render(batch, dt);
         updateActiveObjArr(player.getBulletsForRender());
         updateActiveObjArr(coins);
+        updateActiveObjArr(skeletons);
         for (Destroyed bullet : player.getBulletsForRender()) {
             bullet.render(batch, physics, dt);
         }
         for (Destroyed coin : coins) {
             coin.render(batch, physics, dt);
+        }
+
+        for (Destroyed sc : skeletons) {
+            sc.render(batch, physics, dt);
         }
         batch.end();
         physics.step();

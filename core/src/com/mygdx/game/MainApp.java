@@ -1,12 +1,9 @@
 package com.mygdx.game;
 
-
 import com.badlogic.gdx.Game;
 import com.mygdx.game.screens.MenuScreen;
 
-
 public class MainApp extends Game {
-
 
     @Override
     public void create() {
@@ -17,7 +14,4 @@ public class MainApp extends Game {
     public void render() {
         super.render();
     }
-
-
-
 }
