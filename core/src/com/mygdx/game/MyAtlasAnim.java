@@ -10,7 +10,7 @@ public class MyAtlasAnim {
     private static TextureAtlas atlas;
 
     private Animation<TextureAtlas.AtlasRegion> animation;
-
+    @Getter
     private float time;
 
     public MyAtlasAnim(String atlas, String name, float fps, Animation.PlayMode playMode) {
@@ -22,6 +22,10 @@ public class MyAtlasAnim {
 
     public TextureRegion draw() {
         return animation.getKeyFrame(time);
+    }
+
+    public float getAnimationDuration(){
+        return animation.getAnimationDuration();
     }
 
     public void setTime(float dt) {
