@@ -32,6 +32,8 @@ public class GameScreen implements Screen {
     private int winCondition;
     private ArrayList<Destroyed> coins;
     private ArrayList<Destroyed> skeletons;
+    private HeadsUpDisplay hud;
+
 
     public GameScreen(Game game) {
         this.game = game;
@@ -61,7 +63,7 @@ public class GameScreen implements Screen {
         for (int i = 0; i < bodySkeleton.size; i++) {
             skeletons.add(new Skeleton(bodySkeleton.get(i), player));
         }
-
+        hud = new HeadsUpDisplay(player, camera);
     }
 
     @Override
@@ -92,7 +94,10 @@ public class GameScreen implements Screen {
         for (Destroyed sc : skeletons) {
             sc.render(batch, physics, dt);
         }
+        hud.draw(batch);
+
         batch.end();
+
         physics.step();
         physics.debugDraw(camera.getOrthographicCamera());
         escExitToMenu();
@@ -161,5 +166,6 @@ public class GameScreen implements Screen {
         physics.dispose();
         map.dispose();
         mapRenderer.dispose();
+        hud.dispose();
     }
 }

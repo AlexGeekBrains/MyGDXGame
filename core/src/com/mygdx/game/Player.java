@@ -3,6 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -24,21 +25,28 @@ public class Player {
     private MyAtlasAnim standAnim, runAnim, shotAnim, deathAnim, currentDraw;
     @Getter
     private boolean isRightOrientation;
+    private Label label;
     private static final Sound HIT_SOUND = Gdx.audio.newSound(Gdx.files.internal("hit.mp3"));
     private static final Sound TAKE_COIN_SOUND = Gdx.audio.newSound(Gdx.files.internal("money.mp3"));
     private static final Sound NO_BULLET_SOUND = Gdx.audio.newSound(Gdx.files.internal("nobullet.mp3"));
     private static final Sound RECHARGE_SOUND = Gdx.audio.newSound(Gdx.files.internal("recharge.mp3"));
     private static final Sound LOSS_SOUND = Gdx.audio.newSound(Gdx.files.internal("loss.mp3"));
-    private float health;
+
+    @Getter
+    private int health;
     private boolean isFire;
     private boolean isMisFire;
-    private float bulletsInClip;
+    @Getter
+    private int bulletsInClip;
+    @Setter
+    private boolean isDamage;
     private static final float X_PHYS_OK = 0.250f;
     private static final float Y_PHYS_OK = 30.2f;
     @Getter
     private int coins;
     @Setter
     private boolean isDeath;
+    private Blood blood;
 
     @Getter
     private ArrayList<Destroyed> bulletsForRender;
@@ -51,12 +59,15 @@ public class Player {
         runAnim = new MyAtlasAnim("atlas/unnamed.atlas", "run", 10, Animation.PlayMode.LOOP);
         shotAnim = new MyAtlasAnim("atlas/unnamed.atlas", "shot", 20, Animation.PlayMode.NORMAL);
         deathAnim = new MyAtlasAnim("atlas/unnamed.atlas", "death", 20, Animation.PlayMode.NORMAL);
+        blood = new Blood();
         currentDraw = standAnim;
         this.myInputProcessor = myInputProcessor;
         this.playerBody = playerBody;
         this.physics = physics;
         bulletsForRender = new ArrayList<>();
+        coins = 0;
         bulletsInClip = 7;
+        label = new Label(40, Color.BLACK);
     }
 
 
@@ -70,6 +81,12 @@ public class Player {
         ((PolygonShape) playerBody.getFixtureList().get(playerBody.getFixtureList().size - 1).getShape()).setAsBox(rectangle.width / 15 / physics.getPPM(), rectangle.height / 15 / physics.getPPM(), new Vector2((((rectangle.width - correctX) / 2) - 6f) / physics.getPPM(), -rectangle.height / 2 / physics.getPPM()), 0);
         ((PolygonShape) playerBody.getFixtureList().get(playerBody.getFixtureList().size - 2).getShape()).setAsBox(rectangle.width / 15 / physics.getPPM(), rectangle.height / 15 / physics.getPPM(), new Vector2(((-(rectangle.width - correctX) / 2) + 6f) / physics.getPPM(), -rectangle.height / 2 / physics.getPPM()), 0);
         batch.draw(currentDraw.draw(), rectangle.x, rectangle.y - correctY, rectangle.width, rectangle.height);
+        if (isDamage) {
+            if (blood.render(batch, dt, rectangle)) isDamage = false;
+        }
+        if (bulletsInClip == 0) {
+            label.draw(batch, "Press   R   to reload the weapon", rectangle.x -250, rectangle.y + label.getSize() + 150);
+        }
     }
 
     public void decreaseHealth(float damage) {
@@ -109,7 +126,7 @@ public class Player {
                 }
                 if (bulletsInClip > 0) {
                     bulletsInClip--;
-                    bulletsForRender.add(new Bullet(this).shot(new Vector2(5, 0), physics));
+                    bulletsForRender.add(new Bullet(this).shot(new Vector2(2, 0), physics));
                     HIT_SOUND.play();
                     isFire = true;
                 }
@@ -150,6 +167,7 @@ public class Player {
             }
         }
     }
+
 
     public void reloadedGun() {
         bulletsInClip = 7;
@@ -196,5 +214,6 @@ public class Player {
         runAnim.dispose();
         shotAnim.dispose();
         currentDraw.dispose();
+        label.dispose();
     }
 }

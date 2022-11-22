@@ -9,6 +9,7 @@ import lombok.Setter;
 @Getter
 public class MyContList implements ContactListener {
     private int countFootOnGround;
+
     @Setter
     private Player player;
 
@@ -56,11 +57,9 @@ public class MyContList implements ContactListener {
             }
             if (tmpA.equals("monsterLeftFoot") && tmpB.equals("texture")) {
                 ((PhysBodyMonster) physBodyA).setLeftFootContact(true);
-                System.out.println("leftFoot");
             }
             if (tmpB.equals("monsterLeftFoot") && tmpA.equals("texture")) {
                 ((PhysBodyMonster) physBodyB).setLeftFootContact(true);
-                System.out.println("leftFoot");
             }
             if (tmpA.equals("monsterRightFoot") && tmpB.equals("texture")) {
                 ((PhysBodyMonster) physBodyA).setRightFootContact(true);
@@ -82,9 +81,11 @@ public class MyContList implements ContactListener {
             }
             if (tmpA.equals("monsterDamage") && tmpB.equals("Hero")) {
                 ((PhysBodyMonster) physBodyA).setContactWithHero(true);
+                player.setDamage(true);
             }
             if (tmpB.equals("monsterDamage") && tmpA.equals("Hero")) {
                 ((PhysBodyMonster) physBodyB).setContactWithHero(true);
+                player.setDamage(true);
             }
             if (tmpA.equals("monsterDamage") && tmpB.equals("bullet")) {
                 ((PhysBodyMonster) physBodyA).setContactWithBullet(true);
@@ -130,14 +131,12 @@ public class MyContList implements ContactListener {
             if (tmpB.equals("monsterRightFoot") && tmpA.equals("texture")) {
                 ((PhysBodyMonster) physBodyB).setRightFootContact(false);
             }
-
             if (tmpA.equals("monsterSeeLeftSide") && tmpB.equals("Hero")) {
                 ((PhysBodyMonster) physBodyA).setLeftAttack(false);
             }
             if (tmpB.equals("monsterSeeLeftSide") && tmpA.equals("Hero")) {
                 ((PhysBodyMonster) physBodyB).setLeftAttack(false);
             }
-
             if (tmpA.equals("monsterSeeRightSide") && tmpB.equals("Hero")) {
                 ((PhysBodyMonster) physBodyA).setRightAttack(false);
             }
