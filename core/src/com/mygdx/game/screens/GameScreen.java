@@ -12,8 +12,10 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.*;
+import com.mygdx.game.monsters.Golem;
 import com.mygdx.game.monsters.Skeleton;
 import com.mygdx.game.physbody.PhysBody;
+import lombok.Setter;
 
 import java.util.ArrayList;
 
@@ -28,10 +30,9 @@ public class GameScreen implements Screen {
     private TiledMap map;
     private Body playerBody;
     private OrthogonalTiledMapRenderer mapRenderer;
-    private Box box;
     private int winCondition;
-    private ArrayList<Destroyed> coins;
-    private ArrayList<Destroyed> skeletons;
+    @Setter
+    private ArrayList<Destroyed> coins, boxes, monsters, bangs;
     private HeadsUpDisplay hud;
 
 
@@ -49,20 +50,31 @@ public class GameScreen implements Screen {
         physics.getMyContList().setPlayer(player);
         camera = new MyCamera(batch, playerBody, physics);
         mapRenderer = new OrthogonalTiledMapRenderer(map);
-        box = new Box(physics);
+
+        Array<Body> bodyBox = physics.getBodies("box");
+        boxes = new ArrayList<>();
+        for (int i = 0; i < bodyBox.size; i++) {
+            boxes.add(new Box(bodyBox.get(i)));
+        }
 
         Array<Body> bodyCoin = physics.getBodies("coin");
         winCondition = bodyCoin.size;
         coins = new ArrayList<>();
         for (int i = 0; i < bodyCoin.size; i++) {
-            coins.add(new Coin(coins, bodyCoin.get(i)));
+            coins.add(new Coin(bodyCoin.get(i)));
         }
 
         Array<Body> bodySkeleton = physics.getBodies("skeleton");
-        skeletons = new ArrayList<>();
+        monsters = new ArrayList<>();
         for (int i = 0; i < bodySkeleton.size; i++) {
-            skeletons.add(new Skeleton(bodySkeleton.get(i), player));
+            monsters.add(new Skeleton(bodySkeleton.get(i), player));
         }
+
+        Array<Body> bodyGolem = physics.getBodies("golem");
+        for (int i = 0; i < bodyGolem.size; i++) {
+            monsters.add(new Golem(bodyGolem.get(i), player));
+        }
+        bangs = new ArrayList<>();
         hud = new HeadsUpDisplay(player, camera);
     }
 
@@ -79,25 +91,43 @@ public class GameScreen implements Screen {
         mapRenderer.setView(camera.getOrthographicCamera());
         mapRenderer.render();
         batch.begin();
-        box.render(batch, physics);
+
         player.render(batch, dt);
         updateActiveObjArr(player.getBulletsForRender());
         updateActiveObjArr(coins);
-        updateActiveObjArr(skeletons);
+        updateActiveObjArr(monsters);
+        updateActiveObjArr(bangs);
+        updateActiveObjArr(boxes);
+
+        for (Destroyed destroyed : boxes) {
+            if (((Box) destroyed).checkBoom() && ((Box) destroyed).getPhysBodyBox().isTnt()) {
+                bangs.add(new Bang(physics).start(((Box) destroyed)));
+                ((Box) destroyed).getPhysBodyBox().setActive(false);
+            }
+        }
+
+        for (Destroyed bang : bangs) {
+            bang.render(batch, physics, dt);
+        }
+
+        for (Destroyed box : boxes) {
+            box.render(batch, physics, dt);
+        }
+
         for (Destroyed bullet : player.getBulletsForRender()) {
             bullet.render(batch, physics, dt);
         }
+
         for (Destroyed coin : coins) {
             coin.render(batch, physics, dt);
         }
 
-        for (Destroyed sc : skeletons) {
+        for (Destroyed sc : monsters) {
             sc.render(batch, physics, dt);
         }
+
         hud.draw(batch);
-
         batch.end();
-
         physics.step();
         physics.debugDraw(camera.getOrthographicCamera());
         escExitToMenu();

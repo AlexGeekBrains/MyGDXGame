@@ -19,7 +19,7 @@ public class MenuScreen implements Screen {
     private Rectangle rectangleStart, rectangleOptions;
     private Circle circleMusic;
     private ShapeRenderer shape;
-    private Music music;
+//    private Music music;
 
     public MenuScreen(Game game) {
         this.game = game;
@@ -34,8 +34,8 @@ public class MenuScreen implements Screen {
         circleMusic = new Circle(buttonMusic.getWidth() / 2, Gdx.graphics.getHeight() - buttonMusic.getHeight() / 2, buttonMusic.getHeight() / 2);
 //        shape = new ShapeRenderer();
         batch = new SpriteBatch();
-        music = Gdx.audio.newMusic(Gdx.files.internal("Tetris_1984.mp3"));
-        music.setVolume(0.2f);
+//        music = Gdx.audio.newMusic(Gdx.files.internal("Tetris_1984.mp3"));
+//        music.setVolume(0.2f);
 //        music.play();
     }
 
@@ -73,11 +73,11 @@ public class MenuScreen implements Screen {
 
     private void MusicOnOff() {
         if (Gdx.input.justTouched()) {
-            if (circleMusic.contains(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY()) && music.isPlaying()) {
-                music.stop();
-            } else {
-                music.play();
-            }
+//            if (circleMusic.contains(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY()) && music.isPlaying()) {
+//                music.stop();
+//            } else {
+//                music.play();
+//            }
         }
     }
 
@@ -106,7 +106,7 @@ public class MenuScreen implements Screen {
         this.buttonStart.dispose();
         this.background.dispose();
         this.batch.dispose();
-        this.music.dispose();
+//        this.music.dispose();
 //        this.shape.dispose();
     }
 }

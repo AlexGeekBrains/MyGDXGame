@@ -10,15 +10,20 @@ import lombok.Setter;
 public class PhysBody {
 
     @Setter
-    private boolean isActive;
-
+    protected boolean isActive;
     private Vector2 size;
-    private String name;
-    private Body body;
+    protected String name;
+    protected Body body;
 
     public PhysBody(String name, Vector2 size, Body body) {
         this.name = name;
         this.size = size;
+        this.body = body;
+        isActive = true;
+    }
+
+    public PhysBody(String name, Body body) {
+        this.name = name;
         this.body = body;
         isActive = true;
     }

@@ -14,6 +14,7 @@ public class PhysBodyMonster extends PhysBody {
     private boolean rightAttack;
     private boolean isContactWithHero;
     private boolean isContactWithBullet;
+    private boolean isContactWithBang;
 
     public PhysBodyMonster(String name, Vector2 size, Body body) {
         super(name, size, body);
