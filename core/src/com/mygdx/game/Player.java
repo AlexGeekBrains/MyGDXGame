@@ -51,7 +51,6 @@ public class Player {
     @Getter
     private ArrayList<Destroyed> bulletsForRender;
 
-
     public Player(MyInputProcessor myInputProcessor, Body playerBody, Physics physics) {
         this.physics = physics;
         health = 100;
@@ -70,7 +69,6 @@ public class Player {
         label = new Label(40, Color.BLACK);
     }
 
-
     public void render(SpriteBatch batch, float dt) {
         currentDraw.setTime(dt);
         update();
@@ -85,7 +83,7 @@ public class Player {
             if (blood.render(batch, dt, rectangle)) isDamage = false;
         }
         if (bulletsInClip == 0) {
-            label.draw(batch, "Press   R   to reload the weapon", rectangle.x -250, rectangle.y + label.getSize() + 150);
+            label.draw(batch, "Press   R   to reload the weapon", rectangle.x - 250, rectangle.y + label.getSize() + 150);
         }
     }
 
@@ -126,7 +124,7 @@ public class Player {
                 }
                 if (bulletsInClip > 0) {
                     bulletsInClip--;
-                    bulletsForRender.add(new Bullet(this).shot(new Vector2(2, 0), physics));
+                    bulletsForRender.add(new Bullet(this).shot(new Vector2(2, 0), physics)); // скорость пули тут
                     HIT_SOUND.play();
                     isFire = true;
                 }
@@ -167,7 +165,6 @@ public class Player {
             }
         }
     }
-
 
     public void reloadedGun() {
         bulletsInClip = 7;
@@ -215,5 +212,10 @@ public class Player {
         shotAnim.dispose();
         currentDraw.dispose();
         label.dispose();
+        HIT_SOUND.dispose();
+        TAKE_COIN_SOUND.dispose();
+        NO_BULLET_SOUND.dispose();
+        RECHARGE_SOUND.dispose();
+        LOSS_SOUND.dispose();
     }
 }

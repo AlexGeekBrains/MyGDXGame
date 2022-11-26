@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.game.physbody.PhysBody;
+import com.mygdx.game.physbody.PhysBodyBox;
 import com.mygdx.game.physbody.PhysBodyMonster;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +10,6 @@ import lombok.Setter;
 @Getter
 public class MyContList implements ContactListener {
     private int countFootOnGround;
-
     @Setter
     private Player player;
 
@@ -37,6 +37,12 @@ public class MyContList implements ContactListener {
             }
             if (tmpA.equals("leftFoot") && tmpB.equals("box") || tmpB.equals("leftFoot") && tmpA.equals("box")) {
                 countFootOnGround++;
+            }
+            if (tmpB.equals("bullet") && tmpA.equals("box")) {
+                ((PhysBodyBox) physBodyA).setBang(true);
+            }
+            if (tmpA.equals("bullet") && tmpB.equals("box")) {
+                ((PhysBodyBox) physBodyB).setBang(true);
             }
             if (tmpA.equals("bullet") && tmpB.equals("texture") || tmpB.equals("box") && tmpA.equals("bullet")) {
                 physBodyA.setActive(false);
@@ -95,6 +101,32 @@ public class MyContList implements ContactListener {
                 ((PhysBodyMonster) physBodyB).setContactWithBullet(true);
                 physBodyA.setActive(false);
             }
+            if (tmpA.equals("monsterLeftFoot") && tmpB.equals("box")) {
+                ((PhysBodyMonster) physBodyA).setLeftFootContact(false);
+            }
+            if (tmpB.equals("monsterLeftFoot") && tmpA.equals("box")) {
+                ((PhysBodyMonster) physBodyB).setLeftFootContact(false);
+            }
+            if (tmpA.equals("monsterRightFoot") && tmpB.equals("box")) {
+                ((PhysBodyMonster) physBodyA).setRightFootContact(false);
+            }
+            if (tmpB.equals("monsterRightFoot") && tmpA.equals("box")) {
+                ((PhysBodyMonster) physBodyB).setRightFootContact(false);
+            }
+            if (tmpA.equals("monsterDamage") && tmpB.equals("sensorBang")) {
+                ((PhysBodyMonster) physBodyA).setContactWithBang(true);
+            }
+            if (tmpB.equals("monsterDamage") && tmpA.equals("sensorBang")) {
+                ((PhysBodyMonster) physBodyB).setContactWithBang(true);
+            }
+            if (tmpA.equals("Hero") && tmpB.equals("sensorBang")) {
+                player.decreaseHealth(20f);
+                player.setDamage(true);
+            }
+            if (tmpB.equals("Hero") && tmpA.equals("sensorBang")) {
+                player.decreaseHealth(20f);
+                player.setDamage(true);
+            }
         }
     }
 
@@ -148,6 +180,30 @@ public class MyContList implements ContactListener {
             }
             if (tmpB.equals("monsterDamage") && tmpA.equals("Hero")) {
                 ((PhysBodyMonster) physBodyB).setContactWithHero(false);
+            }
+            if (tmpA.equals("monsterLeftFoot") && tmpB.equals("box")) {
+                ((PhysBodyMonster) physBodyA).setLeftFootContact(true);
+            }
+            if (tmpB.equals("monsterLeftFoot") && tmpA.equals("box")) {
+                ((PhysBodyMonster) physBodyB).setLeftFootContact(true);
+            }
+            if (tmpA.equals("monsterRightFoot") && tmpB.equals("box")) {
+                ((PhysBodyMonster) physBodyA).setRightFootContact(true);
+            }
+            if (tmpB.equals("monsterRightFoot") && tmpA.equals("box")) {
+                ((PhysBodyMonster) physBodyB).setRightFootContact(true);
+            }
+            if (tmpA.equals("monsterDamage") && tmpB.equals("sensorBang")) {
+                ((PhysBodyMonster) physBodyA).setContactWithBang(false);
+            }
+            if (tmpB.equals("monsterDamage") && tmpA.equals("sensorBang")) {
+                ((PhysBodyMonster) physBodyB).setContactWithBang(false);
+            }
+            if (tmpA.equals("Hero") && tmpB.equals("sensorBang")) {
+                player.setDamage(false);
+            }
+            if (tmpB.equals("Hero") && tmpA.equals("sensorBang")) {
+                player.setDamage(false);
             }
         }
     }
