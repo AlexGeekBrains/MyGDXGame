@@ -23,7 +23,7 @@ public class Player {
     private MyAtlasAnim standAnim, runAnim, shotAnim, deathAnim, currentDraw;
 
     private boolean isRightOrientation;
-    private Label label;
+//    private Label label;
     private static final Sound HIT_SOUND = Gdx.audio.newSound(Gdx.files.internal("hit.mp3"));
     private static final Sound TAKE_COIN_SOUND = Gdx.audio.newSound(Gdx.files.internal("money.mp3"));
     private static final Sound NO_BULLET_SOUND = Gdx.audio.newSound(Gdx.files.internal("nobullet.mp3"));
@@ -63,7 +63,7 @@ public class Player {
         bulletsForRender = new ArrayList<>();
         coins = 0;
         bulletsInClip = 7;
-        label = new Label(40, Color.BLACK);
+//        label = new Label(40, Color.BLACK);
     }
 
     public void render(SpriteBatch batch, float dt) {
@@ -79,9 +79,9 @@ public class Player {
         if (isDamage) {
             if (blood.render(batch, dt, rectangle)) isDamage = false;
         }
-        if (bulletsInClip == 0) {
-            label.draw(batch, "Press   R   to reload the weapon", rectangle.x - 250, rectangle.y + label.getSize() + 150);
-        }
+//        if (bulletsInClip == 0) {
+//            label.draw(batch, "Press   R   to reload the weapon", rectangle.x - 250, rectangle.y + label.getSize() + 150);
+//        }
     }
 
     public void decreaseHealth(float damage) {
@@ -208,7 +208,7 @@ public class Player {
         runAnim.dispose();
         shotAnim.dispose();
         currentDraw.dispose();
-        label.dispose();
+//        label.dispose();
         HIT_SOUND.dispose();
         TAKE_COIN_SOUND.dispose();
         NO_BULLET_SOUND.dispose();

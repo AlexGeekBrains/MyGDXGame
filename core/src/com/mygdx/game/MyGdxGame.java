@@ -3,8 +3,6 @@ package com.mygdx.game;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -15,7 +13,6 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.monsters.Golem;
 import com.mygdx.game.monsters.Skeleton;
 import com.mygdx.game.physbody.PhysBody;
-
 
 import java.util.ArrayList;
 
@@ -31,7 +28,7 @@ public class MyGdxGame extends ApplicationAdapter {
     private OrthogonalTiledMapRenderer mapRenderer;
     private int winCondition;
     private ArrayList<Destroyed> coins, boxes, monsters, bangs;
-    private HeadsUpDisplay hud;
+//    private HeadsUpDisplay hud;
 
     @Override
     public void create() {
@@ -72,7 +69,7 @@ public class MyGdxGame extends ApplicationAdapter {
             monsters.add(new Golem(bodyGolem.get(i), player));
         }
         bangs = new ArrayList<>();
-        hud = new HeadsUpDisplay(player, camera);
+//        hud = new HeadsUpDisplay(player, camera);
     }
 
     @Override
@@ -124,7 +121,7 @@ public class MyGdxGame extends ApplicationAdapter {
             sc.render(batch, physics, dt);
         }
 
-        hud.draw(batch);
+//        hud.draw(batch);
         batch.end();
         physics.step();
         physics.debugDraw(camera.getOrthographicCamera());
@@ -174,7 +171,7 @@ public class MyGdxGame extends ApplicationAdapter {
         physics.dispose();
         map.dispose();
         mapRenderer.dispose();
-        hud.dispose();
+//        hud.dispose();
     }
 
 
