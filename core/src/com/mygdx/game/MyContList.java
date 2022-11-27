@@ -4,13 +4,10 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.game.physbody.PhysBody;
 import com.mygdx.game.physbody.PhysBodyBox;
 import com.mygdx.game.physbody.PhysBodyMonster;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
 public class MyContList implements ContactListener {
     private int countFootOnGround;
-    @Setter
+
     private Player player;
 
     public boolean isOnGround() {
@@ -216,5 +213,14 @@ public class MyContList implements ContactListener {
     @Override
     public void postSolve(Contact contact, ContactImpulse impulse) {
 
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 }

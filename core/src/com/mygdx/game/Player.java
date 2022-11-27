@@ -11,19 +11,17 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.ArrayList;
 
 public class Player {
     private Physics physics;
     private MyInputProcessor myInputProcessor;
-    @Getter
+
     private Body playerBody;
-    @Getter
+
     private MyAtlasAnim standAnim, runAnim, shotAnim, deathAnim, currentDraw;
-    @Getter
+
     private boolean isRightOrientation;
     private Label label;
     private static final Sound HIT_SOUND = Gdx.audio.newSound(Gdx.files.internal("hit.mp3"));
@@ -32,23 +30,22 @@ public class Player {
     private static final Sound RECHARGE_SOUND = Gdx.audio.newSound(Gdx.files.internal("recharge.mp3"));
     private static final Sound LOSS_SOUND = Gdx.audio.newSound(Gdx.files.internal("loss.mp3"));
 
-    @Getter
+
     private int health;
     private boolean isFire;
     private boolean isMisFire;
-    @Getter
+
     private int bulletsInClip;
-    @Setter
+
     private boolean isDamage;
     private static final float X_PHYS_OK = 0.250f;
     private static final float Y_PHYS_OK = 30.2f;
-    @Getter
+
     private int coins;
-    @Setter
+
     private boolean isDeath;
     private Blood blood;
 
-    @Getter
     private ArrayList<Destroyed> bulletsForRender;
 
     public Player(MyInputProcessor myInputProcessor, Body playerBody, Physics physics) {
@@ -218,4 +215,60 @@ public class Player {
         RECHARGE_SOUND.dispose();
         LOSS_SOUND.dispose();
     }
+
+    public Physics getPhysics() {
+        return physics;
+    }
+
+
+    public Body getPlayerBody() {
+        return playerBody;
+    }
+
+
+    public MyAtlasAnim getDeathAnim() {
+        return deathAnim;
+    }
+
+    public MyAtlasAnim getCurrentDraw() {
+        return currentDraw;
+    }
+
+    public boolean isRightOrientation() {
+        return isRightOrientation;
+    }
+
+
+    public int getHealth() {
+        return health;
+    }
+
+
+    public int getBulletsInClip() {
+        return bulletsInClip;
+    }
+
+
+    public int getCoins() {
+        return coins;
+    }
+
+    public ArrayList<Destroyed> getBulletsForRender() {
+        return bulletsForRender;
+    }
+
+    public void setPhysics(Physics physics) {
+        this.physics = physics;
+    }
+
+
+    public void setDamage(boolean damage) {
+        isDamage = damage;
+    }
+
+    public void setDeath(boolean death) {
+        isDeath = death;
+    }
+
+
 }

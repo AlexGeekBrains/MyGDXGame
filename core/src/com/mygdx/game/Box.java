@@ -5,12 +5,12 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.mygdx.game.physbody.PhysBodyBox;
-import lombok.Getter;
+
 
 public class Box implements Destroyed {
     private TextureRegion box;
     private Body bodyBox;
-    @Getter
+
     private PhysBodyBox physBodyBox;
     private final static float D_SCALE = 2;
 
@@ -45,5 +45,13 @@ public class Box implements Destroyed {
     @Override
     public Body getBody() {
         return bodyBox;
+    }
+
+    public TextureRegion getBox() {
+        return box;
+    }
+
+    public PhysBodyBox getPhysBodyBox() {
+        return physBodyBox;
     }
 }

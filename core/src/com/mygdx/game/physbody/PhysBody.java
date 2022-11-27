@@ -3,13 +3,10 @@ package com.mygdx.game.physbody;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
 public class PhysBody {
 
-    @Setter
+
     protected boolean isActive;
     private Vector2 size;
     protected String name;
@@ -26,5 +23,34 @@ public class PhysBody {
         this.name = name;
         this.body = body;
         isActive = true;
+    }
+
+     public boolean isActive() {
+        return isActive;
+    }
+
+    public Vector2 getSize() {
+        return size;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Body getBody() {
+        return body;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setBody(Body body) {
+        this.body = body;
     }
 }

@@ -3,14 +3,14 @@ package com.mygdx.game;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import lombok.Getter;
+
 
 public class MyAtlasAnim {
-    @Getter
+
     private static TextureAtlas atlas;
 
     private Animation<TextureAtlas.AtlasRegion> animation;
-    @Getter
+
     private float time;
 
     public MyAtlasAnim(String atlas, String name, float fps, Animation.PlayMode playMode) {
@@ -42,5 +42,18 @@ public class MyAtlasAnim {
 
     public void dispose() {
         this.atlas.dispose();
+    }
+
+    public static TextureAtlas getAtlas() {
+        return atlas;
+    }
+
+    public Animation<TextureAtlas.AtlasRegion> getAnimation() {
+        return animation;
+    }
+
+
+    public void setAnimation(Animation<TextureAtlas.AtlasRegion> animation) {
+        this.animation = animation;
     }
 }

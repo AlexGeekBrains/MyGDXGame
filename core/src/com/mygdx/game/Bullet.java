@@ -5,9 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.game.physbody.PhysBody;
-import lombok.Getter;
 
-@Getter
 public class Bullet implements Destroyed {
     private int lifetime;
     private Player player;
@@ -62,4 +60,10 @@ public class Bullet implements Destroyed {
     private void checkAndDeactivate() {
         if (lifetime <= 0) physBody.setActive(false);
     }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+
 }

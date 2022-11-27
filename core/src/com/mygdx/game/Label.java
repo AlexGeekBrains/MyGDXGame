@@ -5,11 +5,11 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import lombok.Getter;
+
 
 public class Label {
     private BitmapFont font;
-    @Getter
+
     private int size;
 
     public Label(int size, Color color) {
@@ -28,5 +28,9 @@ public class Label {
 
     public void dispose() {
         font.dispose();
+    }
+
+    public int getSize() {
+        return size;
     }
 }
